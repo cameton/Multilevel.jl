@@ -24,6 +24,16 @@ process_uncoarse!(hierarchy, ::AbstractMLSolver, level) = nothing
 """
 ...
 """
+coarsen_input!(hierarchy, ::AbstractMLSolver, finelevel, coarselevel) = nothing
+
+"""
+...
+"""
+uncoarsen_input!(hierarchy, ::AbstractMLSolver, finelevel, coarselevel) = nothing
+
+"""
+...
+"""
 coarsen_solution!(hierarchy, ::AbstractMLSolver, finelevel, coarselevel) = nothing
 
 """

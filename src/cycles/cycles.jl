@@ -9,31 +9,29 @@ struct ML{C<:AbstractCycle, S<:AbstractSolver, T}
     initial::T
 end
 
-(ml::ML)(solution, hierarchy, level) = solve!(solution, hierarchy, ml, level)
+(ml::ML)(hierarchy, level) = cycle!(hierarchy, ml, level)
 
 """
 """
 abstract type AbstractCycle end
 
-cycle!(solution, hierarchy,::AbstractCycle, ml) = error("Undefined cycle type")
-
-dosolveinitial(ml, hierarchy, fine, finelevel) = doterminate(ml.solver, hierarchy, fine, finelevel) || !can_coarsen(hierarchy, finelevel)
+_cycle!(hierarchy,::AbstractCycle, ml, level) = error("Undefined cycle type")
 
 """
 """
-solve!(solution, hierarchy, ml) = solve!(solution, hierarchy, ml, 1)
-function solve!(solution, hierarchy, ml, level)
-    solution = preprocessing!(solution, ml, hierarchy, level)
-    solution = cycle!(solution, hierarchy, ml, level)
-    solution = postprocessing!(solution, ml, hierarchy, level)
+cycle!(hierarchy, ml) = cycle!(solution, hierarchy, ml, 1)
+function cycle!(hierarchy, ml, level)
+    preprocessing!(hierarchy, ml, level)
+    _cycle!(hierarchy, ml, level)
+    postprocessing!(hierarchy, ml, level)
     return solution
 end
 
-function cycle!(solution, hierarchy, ml, level)
-    for i in 1:solver.numcycle
-        solution = precycle!(solution, hierarchy, ml.solver)
-        solution = _cycle!(solution, hierarchy, ml.cycle, ml)
-        solution = postcycle!(solution, hierarchy, ml.solver)
+function _cycle!(hierarchy, ml, level)
+    for i in 1:ml.numcycle
+        precycle!(hierarchy, ml.solver, level)
+        _cycle!(hierarchy, ml.cycle, ml, level)
+        postcycle!(hierarchy, ml.solver, level)
     end
     return solution
 end 

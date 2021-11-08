@@ -1,17 +1,25 @@
 ""
-@inline function _cycle!(nextcycle, fine, hierarchy, ml, finelevel)
-    if dosolveinitial(ml, hierarchy, fine, finelevel)
-        initial = ml.initial(fine, hierarchy, finelevel)
-        coarse = process_initial!(initial, ml.solver, hierarchy, finelevel)
+@inline function _initiallevel(hierarchy, ml, level)
+    ml.initial(hierarchy, finelevel)
+    process_initial!(hierarchy, ml.solver, level)
+end
+
+""
+@inline function _coarselevel(hierarchy, cycletype, ml, finelevel)
+    coarselevel = coarsen!(hierarchy, finelevel, ml.branch)
+    _cycle!(hierarchy, cycletype, ml, coarselevel)
+    uncoarsen!(hierarchy, coarselevel)
+end
+
+""
+@inline function _nextlevel!(hierarchy, cycletype, ml, level)
+    if dosolveinitial(ml, hierarchy, level)
+        _initiallevel(hierarchy, ml, level)
     else
-        coarselevel = coarsen!(hierarchy, finelevel; branch=ml.branch)
-        coarse = coarsen_solution!(fine, ml.solver, hierarchy, finelevel, coarselevel)
-        coarse = cycle!(coarse, hierarchy, nextcycle, ml, coarselevel)
-        uncoarsen!(hierarchy, coarselevel)
-        coarse =  uncoarsen_solution!(coarse, ml.solver, hierarchy, finelevel, coarselevel)
+        _coarselevel(hierarchy, cycletype, ml, level)
     end
 
-    return process_coarse!(coarse, ml.solver, hierarchy, level)
+    process_coarse!(coarse, ml.solver, hierarchy, level)
 end
 
 """
@@ -19,10 +27,9 @@ end
 struct VCycle <: AbstractCycle end
 
 ""
-function cycle!(fine, hierarchy, ::VCycle, ml, level)
-    fine = process_fine!(fine, ml.solver, hierarchy, level)
-    uncoarse = _cycle!(VCycle(), fine, hierarchy, ml, level)
-    return process_uncoarse!(uncoarse, ml.solver, hierarchy, level)
+function _cycle!(hierarchy, ::VCycle, ml, level)
+    process_fine!(hierarchy, ml.solver, level)
+    _nextlevel!(hierarchy, VCycle(), ml, level)
 end
 
 """
@@ -30,11 +37,11 @@ end
 struct FCycle <: AbstractCycle end
 
 ""
-function cycle!(fine, hierarchy, ::FCycle, ml, level)
-    fine = process_fine!(fine, ml.solver, hierarchy, level)
-    uncoarse = _cycle!(FCycle(), fine, ml.solver, hierarchy, level)
-    uncoarse = process_uncoarse!(uncoarse, ml.solver, hierarchy, level)
-    return _cycle!(VCycle(), coarse, ml.solver, hierarchy, level)
+function _cycle!(hierarchy, ::FCycle, ml, level)
+    process_fine!(hierarchy, ml.solver, level)
+    _nextlevel!(hierarchy, FCycle(), ml.solver, level)
+    process_uncoarse!(hierarchy, ml.solver, level)
+    _nextlevel!(hierarchy, VCycle(), ml.solver, level)
 end
 
 """
@@ -42,10 +49,10 @@ end
 struct WCycle <: AbstractCycle end
 
 ""
-function cycle!(fine, hierarchy, ::WCycle, ml, level)
-    fine = process_fine!(fine, ml.solver, hierarchy, level)
-    uncoarse = _cycle!(WCycle(), fine, ml.solver, hierarchy, level)
-    uncoarse = process_uncoarse!(uncoarse, ml.solver, hierarchy, level)
-    return _cycle!(WCycle(), uncoarse, ml.solver, hierarchy, level)
+function cycle!(hierarchy, ::WCycle, ml, level)
+    process_fine!(hierarchy, ml.solver, level)
+    _cycle!(hierarchy, WCycle(), ml.solver, level)
+    process_uncoarse!(hierarchy, ml.solver, level)
+    _cycle!(hierarchy, WCycle(), ml.solver, hierarchy, level)
 end
 
