@@ -1,58 +1,58 @@
 
-abstract type AbstractSolver end
+abstract type AbstractMLSolver end
 
 """
 ...
 """
-doterminate(::AbstractSolver, hierarchy, solution, level) = false
+atbottomlevel(::AbstractMLSolver, hierarchy, level) = false
 
 """
 ...
 """
-process_coarse!(solution, ::AbstractSolver, hierarchy, level) = solution
+process_coarse!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-process_fine!(solution, ::AbstractSolver, hierarchy, level) = solution
+process_fine!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-process_uncoarse!(solution, ::AbstractSolver, hierarchy, level) = solution
+process_uncoarse!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-coarsen_solution!(solution, ::AbstractSolver, hierarchy, finelevel, coarselevel) = solution
+coarsen_solution!(hierarchy, ::AbstractMLSolver, finelevel, coarselevel) = nothing
 
 """
 ...
 """
-uncoarsen_solution!(solution, ::AbstractSolver, hierarchy, finelevel, coarselevel) = solution
+uncoarsen_solution!(hierarchy, ::AbstractMLSolver, finelevel, coarselevel) = nothing
 
 """
 ...
 """
-process_initial!(solution, ::AbstractSolver, hierarchy, level) = solution
+process_initial!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-precycle!(solution, ::AbstractSolver, hierarchy, level) = solution
+precycle!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-postcycle!(solution, ::AbstractSolver, hierarchy, level) = solution
+postcycle!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-preprocessing!(solution, ::AbstractSolver, hierarchy, level) = solution
+preprocessing!(hierarchy, ::AbstractMLSolver, level) = nothing
 
 """
 ...
 """
-postprocessing!(solution, ::AbstractSolver, hierarchy, level) = solution
+postprocessing!(hierarchy, ::AbstractMLSolver, level) = nothing
 
