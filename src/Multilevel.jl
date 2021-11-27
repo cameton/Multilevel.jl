@@ -1,6 +1,7 @@
 "TODO top level doc"
 module Multilevel
 
-include("./cycles/cycles.jl")
+include("./interface.jl")
+include("./cycles.jl")
 
 end # module
