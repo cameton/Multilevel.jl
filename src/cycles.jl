@@ -2,14 +2,14 @@ abstract type AbstractCycle end
 
 ""
 @inline function _descend!(problem, level, cycle_t)
+    coarsen!(problem, level)
     if doinitial(problem, level)
         initial!(problem, level)
         process_initial!(problem, level)
     else
-        coarsen!(problem, level)
         _cycle!(problem, level, cycle_t)
-        uncoarsen!(problem, level)
     end
+    uncoarsen!(problem, level)
     return nothing
 end
 
