@@ -10,7 +10,7 @@ struct FkCycle <: AbstractCycle
 end
 
 ""
-function _cycle!(problem, level, ::FCycle)
+function _core_cycle!(problem, level, ::FCycle)
     process_fine!(problem, level)
     _descend!(problem, level, FCycle())
     process_coarse!(problem, level)
@@ -32,7 +32,7 @@ end
 end
 
 ""
-function _cycle!(problem, level, cycle_t::FkCycle)
+function _core_cycle!(problem, level, cycle_t::FkCycle)
     process_fine!(problem, level)
     _descend!(problem, level, cycle_t)
     process_coarse!(problem, level)
