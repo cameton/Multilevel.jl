@@ -2,60 +2,55 @@
 """
 ...
 """
-process_coarse!(problem, level) = nothing
+initialize(problem) = nothing
 
 """
 ...
 """
-process_fine!(problem, level) = nothing
+descend!(problem, levels) = nothing
 
 """
 ...
 """
-process_uncoarse!(problem, level) = nothing
+ascend!(problem, levels) = nothing
 
 """
 ...
 """
-coarsen!(problem, level) = nothing
+is_lowest(problem, levels) = true
 
 """
 ...
 """
-uncoarsen!(problem, level) = nothing
+lowest!(problem, levels) = nothing
 
 """
 ...
 """
-doinitial(problem, level) = false
+pre_descent!(problem, levels) = nothing
 
 """
 ...
 """
-initial!(problem, level) = nothing
+post_ascent!(problem, levels) = nothing
 
 """
 ...
 """
-process_initial!(problem, level) = nothing
+pre_redescent!(problem, levels) = pre_descent!(problem, levels)
 
 """
 ...
 """
-precycle!(problem, level) = nothing
+highest!(problem, levels) = nothing
 
 """
 ...
 """
-postcycle!(problem, level) = nothing
+preprocessing!(problem, levels) = nothing
 
 """
 ...
 """
-preprocessing!(problem, level) = nothing
-
-"""
-...
-"""
-postprocessing!(problem, level) = nothing
+postprocessing!(problem, levels) = highest!(problem, levels)
 

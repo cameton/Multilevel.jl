@@ -1,43 +1,33 @@
 
 """
 """
-struct FCycle <: AbstractCycle end
-
-"""
-"""
-struct FkCycle <: AbstractCycle 
-    k::Int
+struct FCycle <: AbstractCycle 
+    repeats::UInt
 end
 
-""
-function _core_cycle!(problem, level, ::FCycle)
-    process_fine!(problem, level)
-    _descend!(problem, level, FCycle())
-    process_coarse!(problem, level)
+FCycle() = FCycle(1)
 
-    process_uncoarse!(problem, level)
-    _descend!(problem, level, VCycle())
-    process_coarse!(problem, level)
-    return nothing
-end
-
-""
-@inline function _repeatcycle!(problem, level, cycle_t::FkCycle)
-    for i in 1:(cycle_t.k)
-        process_uncoarse!(problem, level)
-        _descend!(problem, level, VCycle())
-        process_coarse!(problem, level)
+function _fcycle_repeat!(problem, levels, repeats)
+    for i in 1:repeats
+        pre_redescent!(problem, levels)
+        descend!(problem, levels)
+        _cycle!(problem, levels, ::VCycle)
+        ascend!(problem, levels)
+        post_ascent!(problem, levels)
     end
     return nothing
 end
 
-""
-function _core_cycle!(problem, level, cycle_t::FkCycle)
-    process_fine!(problem, level)
-    _descend!(problem, level, cycle_t)
-    process_coarse!(problem, level)
-
-    _repeatcycle!(problem, level, cycle_t)
+function _fcycle_ascend!(problem, levels, depth, repeats)
+    for _ in 1:depth
+        ascend!(problem, levels)
+        post_ascent!(problem, levels)
+        _fcycle_repeat!(problem, levels, repeats)
+    end
     return nothing
 end
 
+function _cycle!(problem, levels, cycle_T::FCycle)
+    depth = _vcycle_descend!(problem, levels)
+    _fcycle_ascend!(problem, levels, depth, cycle_T.repeats)
+end

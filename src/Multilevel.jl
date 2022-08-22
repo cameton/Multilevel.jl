@@ -7,5 +7,8 @@ include("./vcycle.jl")
 include("./fcycle.jl")
 include("./wcycle.jl")
 
+export VCycle, FCycle, WCycle
+
+export cycle!
 
 end # module
