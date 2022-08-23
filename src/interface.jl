@@ -17,9 +17,8 @@ ascend!(problem, levels) = nothing
 """
 ...
 """
-function is_lowest(problem, levels)
-    true
-end
+is_lowest(problem, levels) = true
+
 """
 ...
 """
