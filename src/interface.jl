@@ -17,8 +17,9 @@ ascend!(problem, levels) = nothing
 """
 ...
 """
-is_lowest(problem, levels) = true
-
+function is_lowest(problem, levels)
+    true
+end
 """
 ...
 """
@@ -37,7 +38,7 @@ post_ascent!(problem, levels) = nothing
 """
 ...
 """
-pre_redescent!(problem, levels) = pre_descent!(problem, levels)
+pre_redescent!(problem, levels) = nothing
 
 """
 ...
@@ -52,5 +53,5 @@ preprocessing!(problem, levels) = nothing
 """
 ...
 """
-postprocessing!(problem, levels) = highest!(problem, levels)
+postprocessing!(problem, levels) = nothing
 
