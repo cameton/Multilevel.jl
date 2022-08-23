@@ -9,6 +9,6 @@ include("./wcycle.jl")
 
 export VCycle, FCycle, WCycle
 
-export cycle!
+export cycle!, cycle
 
 end # module

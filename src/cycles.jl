@@ -20,7 +20,7 @@ end
 
 """
 """
-function cycle!(problem; cycle_t = VCycle(), numcycle = 1)
+function cycle(problem; cycle_t = VCycle(), numcycle = 1)
     levels = initialize(problem)
     return cycle!(problem, levels; cycle_t = cycle_t, numcycle = numcycle)
 end

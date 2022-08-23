@@ -44,4 +44,5 @@ function _cycle!(problem, levels, cycle_T::WCycle)
     empty!(cycle_T.depth)
     _wcycle_descend!(problem, levels, cycle_T.depth)
     _wcycle_ascend!(problem, levels, cycle_T.depth, cycle_T.repeats)
+    return nothing
 end

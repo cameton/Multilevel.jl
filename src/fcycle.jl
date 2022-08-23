@@ -11,7 +11,7 @@ function _fcycle_repeat!(problem, levels, repeats)
     for i in 1:repeats
         pre_redescent!(problem, levels)
         descend!(problem, levels)
-        _cycle!(problem, levels, ::VCycle)
+        _cycle!(problem, levels, VCycle())
         ascend!(problem, levels)
         post_ascent!(problem, levels)
     end
@@ -30,4 +30,5 @@ end
 function _cycle!(problem, levels, cycle_T::FCycle)
     depth = _vcycle_descend!(problem, levels)
     _fcycle_ascend!(problem, levels, depth, cycle_T.repeats)
+    return nothing
 end
