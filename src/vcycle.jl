@@ -6,7 +6,7 @@ struct VCycle <: AbstractCycle end
 ""
 function _vcycle_descend!(problem, levels)
     depth = 0
-    while !doinitial(problem, levels) 
+    while !is_lowest(problem, levels) 
         depth += 1
         pre_descent!(problem, levels)
         descend!(problem, levels) 
