@@ -3,7 +3,7 @@
 """
 struct WCycle <: AbstractCycle 
     repeats::UInt
-    depth::Vector{Uint}
+    depth::Vector{UInt}
 end
 
 WCycle() = WCycle(1, UInt[])
