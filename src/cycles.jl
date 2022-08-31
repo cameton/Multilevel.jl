@@ -5,7 +5,7 @@ function _cycle!(problem, levels, cycle_t, numcycle)
         _cycle!(problem, levels, cycle_t)
         highest!(problem, levels)
     end
-    _cycle!(problem, level, cycle_t)
+    _cycle!(problem, levels, cycle_t)
     return nothing
 end
 
